@@ -1,15 +1,12 @@
 # implementation of RNA data reduction for the TNA
-# version 1.0
-# December 3, 2010
-# written by K. Omland, Mergus Analytics, LLC (www.mergusanalytics.com)
+# pre-alpha version written 2010 by
+# K. Omland, Mergus Analytics, LLC (www.mergusanalytics.com)
 #
-# version 1.1
+# additional pre-alpha modifications by R Carnell, Battelle
 # April 20, 2011
-# modified by R Carnell, Battelle
 #
-# version 1.2
+# and by K. Omland
 # May 10, 2011
-# modified by K. Omland
 
 # RNAWrapper performs data reduction for a single plate
 # accepting inputObject and producing outputObject according to
