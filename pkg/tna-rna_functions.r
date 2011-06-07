@@ -25,7 +25,7 @@ RNAWrapper <- function(inputObject, ref, qc) {
 
     # dat.pl is the raw data from the plate
     # unused wells on the plate are removed in the subsetting clause
-    ind <- which(!tolower(inputObject$dat$smp) %in% unused)
+    ind <- which(!is.na(inputObject$dat$smp) & !tolower(inputObject$dat$smp) %in% unused)
     dat.pl <- inputObject$dat[ind,]
 
     # assign dummy variables
@@ -141,7 +141,7 @@ check.ods <- function(dat.pl)
     top <- range(dat.pl$OD[dat.pl$ref == 1 &
                            dat.pl$dln %in% ref.dln[1:2]])
     bot <- range(c(dat.pl$OD[dat.pl$ref == 1 &
-                             dat.pl$dln == ref.dln[dim(ref.dln)[1]]],
+                             dat.pl$dln == ref.dln[length(ref.dln)]],
                    dat.pl$OD[dat.pl$type == "NC"]))
 
     return(top[1] >= cr.top[1] &
@@ -244,7 +244,7 @@ fourpl.prl <- function(b, d, s, log.rED50, log.RNA, tst, x)
 fit.4pl <- function(y, tst, x,
                     b.init, d.init, s.init, log.rED50.init, log.RNA.init)
 {
-    if (log.RNA.init == 0)
+    if (log.RNA.init == 0) ### better to use an explicit flag for fitting fm.ref
     {
         form <- y ~ fourpl.prl(b, d, s, log.rED50, 0, tst, x)
         startlist <- list(b = b.init,
@@ -349,7 +349,7 @@ fit.4pl.ref <- function(dat.ref)
     # interpolate log.rED50.init using
     # least dilute spike with log.OD < infl.pt and the next more dilute spike
     # or spikes at one or other end of range if ODs don't cross inflection point
-    infl.pt <- b.init + d.init*0.5
+    infl.pt <- b.init + d.init * 0.5
     dat.ref$dist <- dat.ref$log.OD - infl.pt
     # assumes 1:2 serial dilution
     trgt.dln <- max(dat.ref$dln[dat.ref$dist >= 0]) * c(1, 2)
